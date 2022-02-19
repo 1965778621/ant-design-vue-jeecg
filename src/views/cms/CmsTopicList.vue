@@ -226,7 +226,7 @@
           delete: "/cms/manager/cmsTopic/delete",
           deleteBatch: "/cms/manager/cmsTopic/deleteBatch",
           exportXlsUrl: "/cms/manager/cmsTopic/exportXls",
-          importExcelUrl: "/cms/manager/cmsTopic/importExcel",
+          importExcelUrl: "cms/manager/cmsTopic/importExcel",
 
         },
         dictOptions:{},

@@ -256,7 +256,7 @@
           delete: "/im/manager/imUser/delete",
           deleteBatch: "/im/manager/imUser/deleteBatch",
           exportXlsUrl: "/im/manager/imUser/exportXls",
-          importExcelUrl: "/im/manager/imUser/importExcel",
+          importExcelUrl: "im/manager/imUser/importExcel",
 
         },
         dictOptions:{},

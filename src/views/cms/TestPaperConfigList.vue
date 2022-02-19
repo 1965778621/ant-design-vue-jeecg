@@ -4,6 +4,26 @@
     <div class="table-page-search-wrapper">
       <a-form layout="inline" @keyup.enter.native="searchQuery">
         <a-row :gutter="24">
+          <a-col :xl="6" :lg="7" :md="8" :sm="24">
+            <a-form-item label="试卷名称">
+              <a-input placeholder="请输入试卷名称" v-model="queryParam.testName"></a-input>
+            </a-form-item>
+          </a-col>
+          <a-col :xl="6" :lg="7" :md="8" :sm="24">
+            <a-form-item label="试卷描述">
+              <a-input placeholder="请输入试卷描述" v-model="queryParam.testDescribe"></a-input>
+            </a-form-item>
+          </a-col>
+          <a-col :xl="6" :lg="7" :md="8" :sm="24">
+            <span style="float: left;overflow: hidden;" class="table-page-search-submitButtons">
+              <a-button type="primary" @click="searchQuery" icon="search">查询</a-button>
+              <a-button type="primary" @click="searchReset" icon="reload" style="margin-left: 8px">重置</a-button>
+              <a @click="handleToggleSearch" style="margin-left: 8px">
+                {{ toggleSearchStatus ? '收起' : '展开' }}
+                <a-icon :type="toggleSearchStatus ? 'up' : 'down'"/>
+              </a>
+            </span>
+          </a-col>
         </a-row>
       </a-form>
     </div>
@@ -12,7 +32,7 @@
     <!-- 操作按钮区域 -->
     <div class="table-operator">
       <a-button @click="handleAdd" type="primary" icon="plus">新增</a-button>
-      <a-button type="primary" icon="download" @click="handleExportXls('考试题库')">导出</a-button>
+      <a-button type="primary" icon="download" @click="handleExportXls('试卷配置')">导出</a-button>
       <a-upload name="file" :showUploadList="false" :multiple="false" :headers="tokenHeader" :action="importExcelUrl" @change="handleImportExcel">
         <a-button type="primary" icon="import">导入</a-button>
       </a-upload>
@@ -89,26 +109,26 @@
       </a-table>
     </div>
 
-    <cms-examination-modal ref="modalForm" @ok="modalFormOk"></cms-examination-modal>
+    <test-paper-config-modal ref="modalForm" @ok="modalFormOk"></test-paper-config-modal>
   </a-card>
 </template>
 
 <script>
 
-  import '@assets/less/TableExpand.less'
+  import '@/assets/less/TableExpand.less'
   import { mixinDevice } from '@/utils/mixin'
   import { JeecgListMixin } from '@/mixins/JeecgListMixin'
-  import CmsExaminationModal from './modules/CmsExaminationModal'
+  import TestPaperConfigModal from './modules/TestPaperConfigModal'
 
   export default {
-    name: 'CmsExaminationList',
+    name: 'TestPaperConfigList',
     mixins:[JeecgListMixin, mixinDevice],
     components: {
-      CmsExaminationModal
+      TestPaperConfigModal
     },
     data () {
       return {
-        description: '考试题库管理页面',
+        description: '试卷配置管理页面',
         // 表头
         columns: [
           {
@@ -122,59 +142,59 @@
             }
           },
           {
-            title:'视频编号ID',
+            title:'试卷名称',
             align:"center",
-            dataIndex: 'courseCode'
+            dataIndex: 'testName'
           },
           {
-            title:'题目类型（多选2 单选1）',
+            title:'考试时间',
             align:"center",
-            dataIndex: 'topicType'
+            dataIndex: 'testTime'
           },
           {
-            title:'题目标题',
+            title:'判断题数量',
             align:"center",
-            dataIndex: 'questionText'
+            dataIndex: 'judgeTopicNum'
           },
           {
-            title:'题目正确答案',
+            title:'判断题每题分数',
             align:"center",
-            dataIndex: 'correctAnswer'
+            dataIndex: 'judgeTopicScore'
           },
           {
-            title:'选项A',
+            title:'单选题题数量',
             align:"center",
-            dataIndex: 'answerForA'
+            dataIndex: 'singleChoiceNum'
           },
           {
-            title:'选项B',
+            title:'单选题每题分数',
             align:"center",
-            dataIndex: 'answerForB'
+            dataIndex: 'singleChoiceScore'
           },
           {
-            title:'选项C',
+            title:'多选题数量',
             align:"center",
-            dataIndex: 'answerForC'
+            dataIndex: 'multipleChoiceNum'
           },
           {
-            title:'选项D',
+            title:'多选题每题分数',
             align:"center",
-            dataIndex: 'answerForD'
+            dataIndex: 'multipleChoiceScore'
           },
           {
-            title:'选项分析',
+            title:'总分',
             align:"center",
-            dataIndex: 'answerRemark'
+            dataIndex: 'totalPoints'
           },
           {
-            title:'对应排列序号',
+            title:'试卷描述',
             align:"center",
-            dataIndex: 'fillNumber'
+            dataIndex: 'testDescribe'
           },
           {
-            title:'删除标志 0未删除 1已删除',
+            title:'创建日期',
             align:"center",
-            dataIndex: 'delFlag'
+            dataIndex: 'createTime'
           },
           {
             title: '操作',
@@ -186,11 +206,11 @@
           }
         ],
         url: {
-          list: "/cms/manager/cmsExamination/list",
-          delete: "/cms/manager/cmsExamination/delete",
-          deleteBatch: "/cms/manager/cmsExamination/deleteBatch",
-          exportXlsUrl: "/cms/manager/cmsExamination/exportXls",
-          importExcelUrl: "cms/manager/cmsExamination/importExcel",
+          list: "/cms/manager/testPaperConfig/list",
+          delete: "/cms/manager/testPaperConfig/delete",
+          deleteBatch: "/cms/manager/testPaperConfig/deleteBatch",
+          exportXlsUrl: "/cms/manager/testPaperConfig/exportXls",
+          importExcelUrl: "cms.manager/testPaperConfig/importExcel",
 
         },
         dictOptions:{},
@@ -210,17 +230,17 @@
       },
       getSuperFieldList(){
         let fieldList=[];
-        fieldList.push({type:'int',value:'courseCode',text:'视频编号ID',dictCode:''})
-        fieldList.push({type:'int',value:'topicType',text:'题目类型（多选2 单选1）',dictCode:''})
-        fieldList.push({type:'string',value:'questionText',text:'题目标题',dictCode:''})
-        fieldList.push({type:'string',value:'correctAnswer',text:'题目正确答案',dictCode:''})
-        fieldList.push({type:'string',value:'answerForA',text:'选项A',dictCode:''})
-        fieldList.push({type:'string',value:'answerForB',text:'选项B',dictCode:''})
-        fieldList.push({type:'string',value:'answerForC',text:'选项C',dictCode:''})
-        fieldList.push({type:'string',value:'answerForD',text:'选项D',dictCode:''})
-        fieldList.push({type:'string',value:'answerRemark',text:'选项分析',dictCode:''})
-        fieldList.push({type:'string',value:'fillNumber',text:'对应排列序号',dictCode:''})
-        fieldList.push({type:'int',value:'delFlag',text:'删除标志 0未删除 1已删除',dictCode:''})
+        fieldList.push({type:'string',value:'testName',text:'试卷名称',dictCode:''})
+        fieldList.push({type:'int',value:'testTime',text:'考试时间',dictCode:''})
+        fieldList.push({type:'int',value:'judgeTopicNum',text:'判断题数量',dictCode:''})
+        fieldList.push({type:'int',value:'judgeTopicScore',text:'判断题每题分数',dictCode:''})
+        fieldList.push({type:'int',value:'singleChoiceNum',text:'单选题题数量',dictCode:''})
+        fieldList.push({type:'int',value:'singleChoiceScore',text:'单选题每题分数',dictCode:''})
+        fieldList.push({type:'int',value:'multipleChoiceNum',text:'多选题数量',dictCode:''})
+        fieldList.push({type:'int',value:'multipleChoiceScore',text:'多选题每题分数',dictCode:''})
+        fieldList.push({type:'int',value:'totalPoints',text:'总分',dictCode:''})
+        fieldList.push({type:'string',value:'testDescribe',text:'试卷描述',dictCode:''})
+        fieldList.push({type:'datetime',value:'createTime',text:'创建日期'})
         this.superFieldList = fieldList
       }
     }

@@ -196,7 +196,7 @@
           delete: "/cms/manager/cmsExamRecord/delete",
           deleteBatch: "/cms/manager/cmsExamRecord/deleteBatch",
           exportXlsUrl: "/cms/manager/cmsExamRecord/exportXls",
-          importExcelUrl: "/cms/manager/cmsExamRecord/importExcel",
+          importExcelUrl: "cms/manager/cmsExamRecord/importExcel",
 
         },
         dictOptions:{},

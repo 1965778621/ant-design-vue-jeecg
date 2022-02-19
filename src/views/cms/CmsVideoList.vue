@@ -190,10 +190,10 @@ export default {
         }
       ],
       url: {
-        list: "/cms/manager//cmsVideo/list",
-        delete: "/cms/manager//cmsVideo/delete",
-        deleteBatch: "/cms/manager//cmsVideo/deleteBatch",
-        exportXlsUrl: "/cms/manager//cmsVideo/exportXls",
+        list: "/cms/manager/cmsVideo/list",
+        delete: "/cms/manager/cmsVideo/delete",
+        deleteBatch: "/cms/manager/cmsVideo/deleteBatch",
+        exportXlsUrl: "/cms/manager/cmsVideo/exportXls",
         importExcelUrl: "cms.manager/cmsVideo/importExcel",
 
       },

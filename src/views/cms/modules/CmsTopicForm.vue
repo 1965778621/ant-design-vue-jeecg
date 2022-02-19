@@ -20,12 +20,15 @@
           </a-col>
           <a-col :span="24">
             <a-form-model-item label="题目标题" :labelCol="labelCol" :wrapperCol="wrapperCol" prop="topicHeadline">
-              <a-input-number v-model="model.topicHeadline" placeholder="请输入题目标题" style="width: 100%" />
+              <a-input v-model="model.topicHeadline" placeholder="请输入题目标题" style="width: 100%" />
             </a-form-model-item>
           </a-col>
           <a-col :span="24">
             <a-form-model-item label="正确答案" :labelCol="labelCol" :wrapperCol="wrapperCol" prop="topicAnswer">
-              <j-multi-select-tag type="checkbox" v-model="model.topicAnswer" dictCode="answer_for" placeholder="请选择正确答案" />
+              <j-dict-select-tag v-if="model.topicType == 1" type="radio" v-model="model.topicAnswer" dictCode="answer_for" placeholder="请选择题目类型" />
+              <j-multi-select-tag v-if="model.topicType == 2" type="checkbox" v-model="model.topicAnswer" dictCode="answer_for" placeholder="请选择正确答案" />
+              <j-dict-select-tag v-if="model.topicType == 3" type="radio" v-model="model.topicAnswer" dictCode="judge_type" placeholder="请选择正确答案" />
+
             </a-form-model-item>
           </a-col>
           <a-col :span="24">

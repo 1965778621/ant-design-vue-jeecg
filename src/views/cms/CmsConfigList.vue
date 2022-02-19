@@ -198,7 +198,7 @@
           delete: "/cms/manager/cmsConfig/delete",
           deleteBatch: "/cms/manager/cmsConfig/deleteBatch",
           exportXlsUrl: "/cms/manager/cmsConfig/exportXls",
-          importExcelUrl: "/cms/manager/cmsConfig/importExcel",
+          importExcelUrl: "cms/manager/cmsConfig/importExcel",
 
         },
         dictOptions:{},
